@@ -30,7 +30,7 @@
 *.exe
 *.out
 *.app
-/kernel86/hcc
+/core86/hcc
 
 # Pictures
-/kernel86/ast.png
+/core86/ast.png
