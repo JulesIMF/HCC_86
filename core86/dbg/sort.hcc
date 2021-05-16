@@ -41,7 +41,7 @@ main
     ! i is int
     ! n is int[10]
     ! i gets 0
-    ! while | i =/= 10 |
+    ! while | i =/= 10 | 
     {
         ! n[i] gets call scanInt| |
         ! i gets i + 1

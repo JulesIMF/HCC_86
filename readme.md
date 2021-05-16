@@ -6,7 +6,7 @@ HCC (originally called "Holy Cross Cross") is a tiny language that supports:
 - if-else
 - while with break and continue
 - static arrays on stack
-- different expressions: arythmetical (+, -, *, /), comparison operators (=, =/=, <, >, <=, >=), logical operators (/\\, \\/) calling functions'
+- different expressions: arythmetical (+, -, *, /), comparison operators (=, =/=, <, >, <=, >=), logical operators (/\\, \\/, ~), calling functions
 - standard functions: scanInt, printInt, newLine
 
 # Grammar
@@ -30,11 +30,23 @@ Current grammar and keywords are to be described in *core86/common/Keywords.h*
     COMP        ::=     FORM ['=/=' '=' '>=' '>' '<=' '<'] FORM  
     FORM        ::=     TERM {['+' '-'] TERM}*  
     TERM        ::=     PRIM {['*' '/'] PRIM}*  
-    PRIM        ::=     ['!' '-']? PRIM | CALL | '(' EXPR ')' | NUMB | VARV
+    PRIM        ::=     ['~' '-']? PRIM | CALL | '(' EXPR ')' | NUMB | VARV
     CALL        ::=     _call ID _delim {EXPR {',' EXPR}*}? _delim
     VARV        ::=     ID | ID '[' EXPR ']'
     TYPE        ::=     ID {'['NUMB']'}
     NUMB        ::=     ['0' - '9']+ {'.'['0' - '9']+}? 
+
+Things that you should know to write code:
+1. Conditions and arguments are passed within two vertical bars, e.g. `! while | n =/= 10 |`
+2. Call functions with placing "call" before function name: `call printInt | n |`
+3. In HCC operators look like in logic. And is "/\\", or is "\\/", equals is "=" and not equals is "=/="
+4. Define functions with word "def". Function may not have any argumets, but if it has, they are to be
+declared using word "with", e.g. `def Accerman with n, m` or `def print5`
+5. Any statement starts with "!" `! call newLine ||` or placed within a block of curly brackets
+6. Assignment is described with word "gets": `! n gets call scanInt ||`
+7. Variables are declared with word "is", like `! n is int`. Declare arrays with square brackets: `! myArray is int[10]`.
+Size should be a constant (no dynamic memory).
+
 
 # Example
 

@@ -380,7 +380,7 @@ void Generator::genCall(Vertex *vertex)
         return;
     }
 
-    int nArgs = fnc->value.nArgs; 
+    int nArgs = fnc->value.nArgs;
 
     if (nArgs != vertex->field.fnc.nArgs)
     {
@@ -587,7 +587,7 @@ void Generator::genLoop(Vertex *vertex)
     /*
         *   Слева - условие
         *   Справа - стейтмент
-        */
+    */
 
     /*
         *   желаемая конструкция цикла с учетом предсказаний конвейера:   
@@ -601,7 +601,7 @@ void Generator::genLoop(Vertex *vertex)
         *   test    rbx, rbx
         *   jne     loop
         *   break:
-        */
+    */
     
     loops->pushBack(vertex);
     Instruction instruction = {};
@@ -734,6 +734,8 @@ void Generator::genDvar(Vertex *vertex)
 
     assert("Expected Id on the left and right in Dvar" && vertex->left && vertex->right);
 
+
+    // пока реализован только int
     if (strcmp("int", vertex->right->field.varDecl.iter.get()))
     {
         error = CompileError::UNDEFINED_TYPE;
@@ -1138,9 +1140,9 @@ void Generator::genFuncDecl(Vertex *vertex)
 void Generator::genArgList(Vertex *vertex)
 {
     /*
-        *   Слева - ранние аргументы
-        *   Справа - идентификатор
-        */
+    *   Слева - ранние аргументы
+    *   Справа - идентификатор
+    */
 
     // пихаем аргументы в обратном порядке, чтобы сохранить cdecl
     generate(vertex->left);
@@ -1218,6 +1220,7 @@ bool Generator::genOperator(Vertex *vertex)
     Register leftOp = stackImit.getCurrent();
     stackImit.pop();
     Instruction instruction = {};
+    
     // если правый операнд на стеке, то его все равно придется убрать...
     // и если левый тоже на стеке, то с ними нельзя провести операцию без удаления правого в регистр
     // так давайте его и запихаем в rdi и сделаем вид, что так все и было!
