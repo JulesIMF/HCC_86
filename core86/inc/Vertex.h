@@ -36,6 +36,7 @@ namespace Node
         Main,
         FuncDecl,
         Var,
+        VarType,
         Call,
         Delimiter,
         With,
@@ -70,6 +71,17 @@ namespace Node
         Cond    = 'I',
         Else    = 'E',
         Ret     = 'R',
+        Cont    = 'U',
+        Break   = 'B',
+    };
+
+    struct VarDeclaration
+    {
+        StringsHolder::StringIter
+            iter;
+
+        // Ноль, если не массив
+        long long nElements;
     };
 
     struct stConst
@@ -83,7 +95,7 @@ namespace Node
         StringsHolder::StringIter
             iter;
 
-        size_t          nArgs;
+        int          nArgs;
     };
 
     struct Vertex
@@ -101,16 +113,17 @@ namespace Node
             stConst         lit;
             stFnc           fnc;
             StatementType   stType;
+            VarDeclaration  varDecl;
             char            delimiter;
         } 
         field;
 
         static Vertex* newVertex(
             Type    type, 
-            size_t  row = 0, 
-            size_t  column = 0, 
-            Vertex* left = nullptr, 
-            Vertex* right = nullptr);
+            size_t  row     = 0, 
+            size_t  column  = 0, 
+            Vertex* left    = nullptr, 
+            Vertex* right   = nullptr);
 
         static void    deleteVertex(Vertex* vertex);
     };

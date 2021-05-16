@@ -250,7 +250,7 @@ Vertex* Parse::getStmt(void)
     index++;
 
     /*
-    *   {CALL | ASGN | LOOP | DVAR | COND | RET}
+    *   {_break | _cont | CALL | LOOP | DVAR | COND | RET | ASGN}
     */
 
     stmt = getCall();    if (stmt) 
@@ -262,11 +262,20 @@ Vertex* Parse::getStmt(void)
         stmt->right         = id;
         return stmt; 
     }
-    stmt = getAsgn();    if (stmt) return stmt; if (error) return nullptr;
+
+    if(TYPE == Type::Statement && FIELD.stType == StatementType::Break ||
+       TYPE == Type::Statement && FIELD.stType == StatementType::Cont)
+    {
+        auto expr = THIS;
+        index++;
+        return expr;
+    }
+
     stmt = getLoop();    if (stmt) return stmt; if (error) return nullptr;
     stmt = getDvar();    if (stmt) return stmt; if (error) return nullptr;
     stmt = getCond();    if (stmt) return stmt; if (error) return nullptr;
     stmt = getRet ();    if (stmt) return stmt; if (error) return nullptr;
+    stmt = getAsgn();    if (stmt) return stmt; if (error) return nullptr;
     
     error = CompileError::EXPECTED_STMT;
     return nullptr;
@@ -375,23 +384,28 @@ Vertex* Parse::getAsgn(void)
     if (index + 1 >= tokens.size())
         return nullptr;
 
-    //ID _asgn EXPR
-    if ((*tokens.at(index + 1))->type         != Type::Statement        || 
-        (*tokens.at(index + 1))->field.stType != StatementType::Asgn    ||
-        TYPE != Type::Id) return nullptr;
+    auto oldIndex = index;
 
     /*
-    *   ID
+    *   VARV
     */
-
-    CTYPE(Id, EXPECTED_ID);
-    auto id   = THIS;
-    index++;
+    auto varv   = getVarv();
+    if (error || varv == nullptr)
+        return nullptr;
 
     /*
     *   _asgn
     */
-    auto asgn = THIS;
+
+    // VARV _asgn EXPR
+    if (TYPE != Type::Statement ||
+        FIELD.stType != StatementType::Asgn)
+    {
+        index = oldIndex;
+        return nullptr;
+    }
+        
+    auto asgn   = THIS;
     index++;
 
     /*
@@ -408,7 +422,7 @@ Vertex* Parse::getAsgn(void)
         return nullptr;
     }
 
-    asgn->left  = id;
+    asgn->left  = varv;
     asgn->right = expr;
 
     return asgn;
@@ -478,7 +492,7 @@ Vertex* Parse::getDvar(void)
     if (index + 2 >= tokens.size())
         return nullptr;
 
-    if((*tokens.at(index+1))->type       != Type::Statement      || 
+    if((*tokens.at(index+1))->type         != Type::Statement      || 
        (*tokens.at(index+1))->field.stType != StatementType::Dvar)
         return nullptr;
 
@@ -500,10 +514,12 @@ Vertex* Parse::getDvar(void)
     /*
     *   TYPE
     */
-
-    CTYPE(Id, EXPECTED_ID);
-    auto type = THIS;
-    index++;
+    auto type = getType();
+    if(type == nullptr)
+    {
+        error = CompileError::EXPECTED_TYPE;
+        return nullptr;
+    }
 
     dvar->left  = id;
     dvar->right = type;
@@ -787,14 +803,111 @@ Vertex* Parse::getPrim()
     /*
     *   VARV
     */
-    if (TYPE == Type::Id)
-    {
-        auto varv  = THIS;
-        varv->type = Type::Var;
-        index++;
+    auto varv   = getVarv();
+    if(varv != nullptr)
         return varv;
-    }
 
     if(!error) error = CompileError::EXPECTED_PRIM;
     return nullptr;
+}
+
+
+Vertex* Parse::getVarv()
+{
+    // ID | ID '[' EXPR ']'
+    if(TYPE != Type::Id)
+        return nullptr;
+
+    /*
+    *   ID
+    */
+    auto id = THIS;
+    index++;
+
+    id->type = Type::Var;
+
+    // '[' EXPR ']'
+
+    /*
+    *   '['
+    */
+    if(TYPE == Type::Delimiter && THIS->field.delimiter == '[')
+    {
+        index++;
+
+        /*
+        *   EXPR
+        */
+        auto expr = getExpr();
+        if(expr == nullptr)
+        {
+            if(!error)
+                error = CompileError::EXPECTED_EXPR;
+
+            return nullptr;
+        }
+
+        /*
+        *   ']'
+        */
+        if (!(TYPE == Type::Delimiter && THIS->field.delimiter == ']') )
+        {
+            error = CompileError::EXPECTED_RIGHTS;
+            return nullptr;
+        }
+
+        else
+        {
+            index++;
+
+            id->left = expr;
+        }
+    }
+
+    return id;
+}
+
+
+Vertex* Parse::getType()
+{
+    // ID | ID '[' EXPR ']'
+    if (TYPE != Type::Id)
+        return nullptr;
+
+    /*
+    *   ID
+    */
+    auto id = THIS;
+    index++;
+
+    id->type                    = Type::VarType;
+    id->field.varDecl.iter      = id->field.iter;
+    id->field.varDecl.nElements = 0;
+
+    // '[' NUMB ']'
+
+    /*
+    *   '['
+    */
+    if (TYPE == Type::Delimiter && THIS->field.delimiter == '[')
+    {
+        index++;
+
+        CTYPE(Const, EXPECTED_CONST);
+        id->field.varDecl.nElements = FIELD.lit.value;
+        index++;
+
+        /*
+        *   ']'
+        */
+        if (!(TYPE == Type::Delimiter && THIS->field.delimiter == ']'))
+        {
+            error = CompileError::EXPECTED_RIGHTS;
+            return nullptr;
+        }
+
+        index++;
+    }
+
+    return id;
 }

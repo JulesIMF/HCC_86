@@ -1,0 +1,41 @@
+def Fib with n
+{
+    ! if | n = 0 |
+        ! return 0
+
+    ! if | n = 1 |
+        ! return 1
+    
+    ! return call Fib | n - 1 | + call Fib | n - 2 |
+}
+
+; mine - 
+; gcc -O0 - 29.92
+
+main
+{
+    ! i is int
+    ! i gets 0
+    ! n is int
+    ! n gets 10
+    ! while | i =/= n |
+    {
+        ! d is int
+        ! d gets call scanInt ||
+        ! if | d = 0 |
+            ! break
+        ! if | d <= 10 |
+        {
+            ! call printInt | d |
+            ! call newLine ||
+            ! continue
+        }
+
+        {
+            ! call printInt | call Fib | d | |
+            ! call newLine ||
+        }
+
+        ! i gets i + 1
+    }
+}

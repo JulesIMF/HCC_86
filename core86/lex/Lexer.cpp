@@ -133,8 +133,10 @@ isdef(with);
 isdef(asgn);
 isdef(dvar);
 isdef(main);
-isdef(return );
+isdef(return);
 isdef(call);
+isdef(break);
+isdef(cont);
 isdef(fdelim);
 isdef(add);
 isdef(sub);
@@ -151,6 +153,8 @@ isdef(or);
 isdef(and);
 isdef(left);
 isdef(right);
+isdef(lefts);
+isdef(rights);
 isdef(comma);
 isdef(comment);
 #undef isdef
@@ -263,6 +267,16 @@ Lexed Lexer::getLexed(char const *source_)
             DELIM(')')
         }
 
+        if (is_lefts())
+        {
+            DELIM('[')
+        }
+
+        if (is_rights())
+        {
+            DELIM(']')
+        }
+
         if (is_comma())
         {
             DELIM(',')
@@ -326,6 +340,16 @@ Lexed Lexer::getLexed(char const *source_)
         if (is_return())
         {
             STMT(Ret)
+        }
+
+        if (is_cont())
+        {
+            STMT(Cont)
+        }
+
+        if (is_break())
+        {
+            STMT(Break)
         }
 
         if (is_call())
@@ -519,6 +543,10 @@ void lexedDump(Lexed lexed)
 
         case Node::Type::With:
             printf("with\n");
+            break;
+
+        case Node::Type::VarType:
+            printf("varDecl\n");
             break;
 
         default:

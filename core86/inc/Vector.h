@@ -48,11 +48,11 @@ public:
         free(data_);
     }
 
-    static Vector*
-        newVector()
+    static Vector* newVector()
     {
         auto vector = (Vector*)calloc(1, sizeof(Vector));
         vector->init();
+        return vector;
     }
 
     static void
@@ -68,7 +68,7 @@ public:
         return size_;
     }
 
-    T* at(size_t index)
+    T*          at(size_t index)
     {
         assert("assert in function "  && index < size_);
         return data_ + index;

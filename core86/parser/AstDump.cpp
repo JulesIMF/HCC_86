@@ -16,16 +16,13 @@ Edit Notes:
     
 **********************************************************************/
 
-#ifndef CPP_ASTDUMP
-#define CPP_ASTDUMP
-
 #include <cstdlib>
 #include <cassert>
 #include <cstdio>
 #include "../inc/Vertex.h"
 
 
-static void putVertex(FILE* file, Node::Vertex* vertex)
+void putVertex(FILE* file, Node::Vertex* vertex)
 {
     static int visited = 0;
     //printf("visit = %lu\n", visited++);
@@ -81,6 +78,10 @@ static void putVertex(FILE* file, Node::Vertex* vertex)
         fprintf(file, "v%p[label = \"%lu:%lu\\nFuncDecl\\nid = \\\"%s\\\", nArgs = %lu\", shape = \"parallelogram\", style = \"filled, bold\", fillcolor = \"forestgreen\", fontsize = 15];",
             vertex, vertex->row, vertex->column, vertex->field.fnc.iter.get(), vertex->field.fnc.nArgs); break;
 
+    case Type::VarType:
+        fprintf(file, "v%p[label = \"%lu:%lu\\VarType\\nid = \\\"%s\\\", nElements = %lu\", shape = \"parallelogram\", style = \"filled, bold\", fillcolor = \"forestgreen\", fontsize = 15];",
+            vertex, vertex->row, vertex->column, vertex->field.varDecl.iter.get(), vertex->field.varDecl.nElements); break;
+
     case Type::PgmEnd:
         fprintf(file, "v%p[label = \"%lu:%lu\\nPgmEnd\", shape = \"parallelogram\", fillcolor = \"blue\", style = \"filled, bold\", fontsize = 15];",
             vertex, vertex->row, vertex->column); break;
@@ -107,7 +108,7 @@ void astDump(Node::Vertex* astTree)
 {
     FILE *file = fopen("dbg/astsrc/ast.dot", "w");
     assert(file);
-    fprintf(file, "digraph\n{\ndpi = 400;\n");
+    fprintf(file, "digraph\n{\ndpi = 300;\n");
     putVertex(file, astTree);
     fprintf(file, "}");
     fclose(file);
@@ -116,5 +117,3 @@ void astDump(Node::Vertex* astTree)
     // Следующий трюк работает только под Шиндовс
     //system("start ast.png");
 }
-
-#endif

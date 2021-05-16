@@ -24,6 +24,7 @@ Edit Notes:
 #include "VarTable.h"
 #include "Lexer.h"
 #include "CompilationStructs.h"
+#include "Vector.h"
 
 void constConvolution(Node::Vertex* vertex);
 
@@ -48,7 +49,7 @@ protected:
     Table<Function>
         fncTable;
     StackImitate stackImit;
-
+    Vector<Node::Vertex*>* loops;
     CompileError error;
     StringsHolder *holder;
     StringsHolder::StringIter *currentFnc;
@@ -84,6 +85,10 @@ protected:
     void genAsgn(Node::Vertex *vertex);
 
     void genDvar(Node::Vertex *vertex);
+
+    void genBreak(Node::Vertex *vertex);
+
+    void genCont(Node::Vertex *vertex);
 
     //------------------------------------------------------
     //---------------------!!STATEMENTS---------------------

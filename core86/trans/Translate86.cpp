@@ -408,6 +408,10 @@ int Translator::translateInstruction(Instruction instruction)
         emit(0x0f, 0x05);
         return 2;
 
+    case InstructionType::lea:
+        emit(0x48, 0x8d, 0x04, 0xf8);
+        return 4;
+
     default:
         errorMessage("неизвестная инструкция для translateInstruction, index = %d\n", instruction.type);
         abort();

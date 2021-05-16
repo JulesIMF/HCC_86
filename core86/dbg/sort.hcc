@@ -1,0 +1,51 @@
+def printArr with array, size
+{
+    ! i is int
+    ! call newLine | |
+    ! i gets 0
+    ! while | i =/= size |
+    {
+        ! call printInt | array[i] |
+        ! call newLine ||
+        ! i gets i + 1
+    }   
+}
+
+def sort with array, size
+{
+    ! tmp is int
+    ! i is int
+    ! count is int
+    ! count gets 0
+    ! while | count < size |
+    {
+        ! i gets 0
+        ! while | i < size - 1 |
+        {
+            ! if | array[i] > array[i+1] |
+            {
+                ! tmp gets array[i]
+                ! array[i] gets array[i + 1]
+                ! array[i+1] gets tmp
+            }
+
+            ! i gets i + 1
+        }
+
+        ! count gets count + 1
+    }
+}
+
+main
+{
+    ! i is int
+    ! n is int[10]
+    ! i gets 0
+    ! while | i =/= 10 |
+    {
+        ! n[i] gets call scanInt| |
+        ! i gets i + 1
+    }
+    ! call sort | n, 10 |
+    ! call printArr | n, 10 |
+}

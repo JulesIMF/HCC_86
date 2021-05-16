@@ -51,6 +51,7 @@ enum class InstructionType
     int_,
     call,
     movzx,
+    lea,
 };
 
 enum class OperandType

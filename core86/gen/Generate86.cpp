@@ -264,11 +264,13 @@ int countVars(Vertex *vertex)
     if (vertex == nullptr)
         return 0;
 
-    return countVars(vertex->left) +
-           countVars(vertex->right) +
+    int beneathMe = countVars(vertex->left) +
+                    countVars(vertex->right);
 
-           (vertex->type == Type::Statement &&
-            vertex->field.stType == StatementType::Dvar);
+    if(vertex->type != Type::VarType)
+        return beneathMe;
+    
+    return beneathMe + vertex->field.varDecl.nElements + 1;
 }
 
 void Generator::insertStd(void)
@@ -287,12 +289,14 @@ Compiled Generator::compile(Vertex *ast, StringsHolder *holder_, bool debug)
     holder = holder_;
     varTable.init();
     fncTable.initTable();
+
     currentFnc = nullptr;
     isInMain = false;
     currentNArgs = 0;
     shift = 0;
     error = CompileError::NO_ERROR_;
-    flow.instructions->init();
+    flow.instructions = Vector<Instruction>::newVector();
+    loops = Vector<Vertex*>::newVector();
     // TODO - вставить код стандартных функций
     insertStd();
 
@@ -315,6 +319,7 @@ Compiled Generator::compile(Vertex *ast, StringsHolder *holder_, bool debug)
 
     varTable.deInit();
     fncTable.freeTable();
+    Vector<Vertex*>::deleteVector(loops);
 
     return flow;
 }
@@ -333,12 +338,12 @@ void Generator::genCallArgList(Vertex *vertex)
         *   Справа - expression
         */
 
-    genCallArgList(vertex->left);
-    if (!error)
-        genExpr(vertex->right);
-    
     if(vertex->right == nullptr)
         return;
+
+    genExpr(vertex->right);
+    
+    
 
     auto stackTop = stackImit.getCurrent();
     stackImit.pop();
@@ -353,6 +358,10 @@ void Generator::genCallArgList(Vertex *vertex)
         instruction.field.operand[0] = {OperandType::reg, stackTop};
         flow.instructions->pushBack(instruction);
     }
+    
+    if (!error)
+        genCallArgList(vertex->left);
+    
 }
 
 void Generator::genCall(Vertex *vertex)
@@ -452,6 +461,11 @@ void Generator::genRet(Vertex *vertex)
         *   Справа - ничего
     */
 
+    generate(vertex->left);
+    stackImit.pop();
+
+    if (error)
+        return;
 
     if(isInMain)
     {
@@ -463,17 +477,17 @@ void Generator::genRet(Vertex *vertex)
         instruction.field.operand[1].field.imm = 60;
         flow.instructions->pushBack(instruction);
 
+        // mov rdi, rbx
+        instruction.type = InstructionType::mov;
+        instruction.field.operand[0] = {OperandType::reg, Register::rdi};
+        instruction.field.operand[1] = {OperandType::reg, Register::rbx};
+        flow.instructions->pushBack(instruction);
+
         // syscall (exit)
         flow.instructions->pushBack({InstructionType::syscall});
 
         return;
     }
-
-
-    generate(vertex->left);
-
-    if (error)
-        return;
 
     // то, что мы сгенерировали, лежит в rbx
     // вернем через rax
@@ -484,7 +498,6 @@ void Generator::genRet(Vertex *vertex)
     instruction.field.operand[0] = {OperandType::reg, Register::rax};
     instruction.field.operand[1] = {OperandType::reg, Register::rbx};
     flow.instructions->pushBack(instruction);
-    stackImit.pop();
 
     if (currentNVars + currentNArgs)
     {
@@ -492,7 +505,7 @@ void Generator::genRet(Vertex *vertex)
 
         if (currentNVars)
         {
-            // add, 8 * currentNVars
+            // add rsp, 8 * currentNVars
             instruction.type = InstructionType::add;
             instruction.field.operand[0] = {OperandType::reg, Register::rsp};
             instruction.field.operand[1].type = OperandType::imm;
@@ -589,7 +602,8 @@ void Generator::genLoop(Vertex *vertex)
         *   jne     loop
         *   break:
         */
-
+    
+    loops->pushBack(vertex);
     Instruction instruction = {};
 
     // ищем условие
@@ -629,12 +643,15 @@ void Generator::genLoop(Vertex *vertex)
     instruction.field.operand[0] = {OperandType::reg, Register::rbx};
     instruction.field.operand[1] = {OperandType::reg, Register::rbx};
     flow.instructions->pushBack(instruction);
+    stackImit.pop();
 
     // jne .loop_...
     INSERT_JMP(jne, "loop");
 
     // .break_p...:
     INSERT_LABEL("break");
+
+    loops->popBack();
 }
 
 void Generator::genAsgn(Vertex *vertex)
@@ -658,34 +675,131 @@ void Generator::genAsgn(Vertex *vertex)
     if (error)
         return;
 
-    // mov [rbp+var.shift], rbx
-    Instruction instruction = {};
-    instruction.type = InstructionType::mov;
-    instruction.field.operand[0].type = OperandType::mem;
-    instruction.field.operand[0].field.mem.reg = Register::rbp;
-    instruction.field.operand[0].field.mem.shift = var.shift;
-    instruction.field.operand[1] = {OperandType::reg, Register::rbx};
-    flow.instructions->pushBack(instruction);
-    stackImit.pop();
+    if(vertex->left->left == nullptr)
+    {
+        // mov [rbp+var.shift], rbx
+        Instruction instruction = {};
+        instruction.type = InstructionType::mov;
+        instruction.field.operand[0].type = OperandType::mem;
+        instruction.field.operand[0].field.mem.reg = Register::rbp;
+        instruction.field.operand[0].field.mem.shift = var.shift;
+        instruction.field.operand[1] = {OperandType::reg, Register::rbx};
+        flow.instructions->pushBack(instruction);
+        stackImit.pop();
+    }
+
+    else
+    {
+        generate(vertex->left->left);
+
+        // mov rax, [rbp+var.shift]
+        Instruction instruction = {};
+        instruction.type = InstructionType::mov;
+        instruction.field.operand[0] = {OperandType::reg, Register::rax};
+        instruction.field.operand[1].type = OperandType::mem;
+        instruction.field.operand[1].field.mem.reg = Register::rbp;
+        instruction.field.operand[1].field.mem.shift = var.shift;
+        flow.instructions->pushBack(instruction);
+
+        // mov rdi, rcx
+        instruction.type = InstructionType::mov;
+        instruction.field.operand[0] = {OperandType::reg, Register::rdi};
+        instruction.field.operand[1] = {OperandType::reg, Register::rcx};
+        flow.instructions->pushBack(instruction);
+
+        // lea rax, [rax + 8*rdi]
+        instruction.type = InstructionType::lea;
+        flow.instructions->pushBack(instruction);
+
+        // mov [rax+0], rbx
+        instruction.type = InstructionType::mov;
+        instruction.field.operand[0].type = OperandType::mem;
+        instruction.field.operand[0].field.mem.reg = Register::rax;
+        instruction.field.operand[0].field.mem.shift = 0;
+        instruction.field.operand[1] = {OperandType::reg, Register::rbx};
+        flow.instructions->pushBack(instruction);
+        stackImit.pop();
+        stackImit.pop();
+    }
+    
 }
 
 void Generator::genDvar(Vertex *vertex)
 {
     /*
         *   Слева - имя переменной
-        *   Справа - имя типа
+        *   Справа - тип
         *   Быдлокод по причине не успеваю, нужны таблицы типов!
         */
 
     assert("Expected Id on the left and right in Dvar" && vertex->left && vertex->right);
 
-    if (strcmp("int", vertex->right->field.iter.get()))
+    if (strcmp("int", vertex->right->field.varDecl.iter.get()))
     {
         error = CompileError::UNDEFINED_TYPE;
         return;
     }
 
-    varTable.insert(vertex->left->field.iter, -(shift += 8), true);
+    if(vertex->right->field.varDecl.nElements == 0)
+        varTable.insert(vertex->left->field.iter, -(shift += 8), true);
+
+    else
+    {
+        shift += 8 * vertex->right->field.varDecl.nElements;
+        //debugMessage("nElements = %d", vertex->right->field.varDecl.nElements);
+
+        Instruction instruction = {};
+
+        // mov rax, rbp
+        instruction.type = InstructionType::mov;
+        instruction.field.operand[0] = {OperandType::reg, Register::rax};
+        instruction.field.operand[1] = {OperandType::reg, Register::rbp};
+        flow.instructions->pushBack(instruction);
+
+        // sub rax, shift
+        instruction.type = InstructionType::sub;
+        instruction.field.operand[0] = {OperandType::reg, Register::rax};
+        instruction.field.operand[1] = {.type = OperandType::imm,
+                                        .field = {.imm = shift}};
+        flow.instructions->pushBack(instruction);
+
+        // mov [rbp + (-shift-8)], rax
+        instruction.type = InstructionType::mov;
+        instruction.field.operand[0] = {.type = OperandType::mem, 
+                                        .field = {.mem = {Register::rbp, -shift - 8}}};
+        instruction.field.operand[1] = {OperandType::reg, Register::rax};
+        flow.instructions->pushBack(instruction);
+
+        varTable.insert(vertex->left->field.iter, -(shift += 8), true, true);
+    }
+
+    
+}
+
+void Generator::genCont(Vertex* vertex)
+{
+    if (!loops->size())
+    {
+        error = CompileError::CONT_WITHOUT_LOOP;
+        return;
+    }
+
+    Instruction instruction = {};
+    vertex = *loops->at(loops->size() - 1);
+    INSERT_JMP(jmp, "loop");
+}
+
+void Generator::genBreak(Vertex* vertex)
+{
+    if (!loops->size())
+    {
+        error = CompileError::BREAK_WITHOUT_LOOP;
+        return;
+    }
+
+    Instruction instruction = {};
+    vertex = *loops->at(loops->size() - 1);
+    INSERT_JMP(jmp, "break");
 }
 
 //------------------------------------------------------
@@ -733,13 +847,67 @@ bool Generator::genVarv(Vertex *vertex)
         return false;
     }
 
-    auto nextReg = stackImit.getNext();
-    stackImit.push();
+
 
     Instruction instruction = {};
 
-    if (nextReg == Register::stack)
+    if(vertex->left == nullptr)
     {
+        auto nextReg = stackImit.getNext();
+        stackImit.push();
+
+        if (nextReg == Register::stack)
+        {
+            // mov rax, [rbp+var.shift]
+            instruction.type = InstructionType::mov;
+            instruction.field.operand[0] = {OperandType::reg, Register::rax};
+            instruction.field.operand[1].type = {OperandType::mem};
+            instruction.field.operand[1].field.mem.reg = Register::rbp;
+            instruction.field.operand[1].field.mem.shift = var.shift;
+            flow.instructions->pushBack(instruction);
+
+            // push rax
+            instruction.zeroAll();
+            instruction.type = InstructionType::push;
+            instruction.field.operand[0] = {OperandType::reg, Register::rax};
+            flow.instructions->pushBack(instruction);
+        }
+
+        else
+        {
+            // mov nextReg, [rbp+var.shift]
+            instruction.type = InstructionType::mov;
+            instruction.field.operand[0] = {OperandType::reg, nextReg};
+            instruction.field.operand[1].type = {OperandType::mem};
+            instruction.field.operand[1].field.mem.reg = Register::rbp;
+            instruction.field.operand[1].field.mem.shift = var.shift;
+            flow.instructions->pushBack(instruction);
+        }
+    }
+
+    else
+    {
+        generate(vertex->left);
+
+        auto currentReg = stackImit.getCurrent();
+        if(currentReg == Register::stack)
+        {
+            // pop rdi
+            instruction.zeroAll();
+            instruction.type = InstructionType::pop;
+            instruction.field.operand[0] = {OperandType::reg, Register::rdi};
+            flow.instructions->pushBack(instruction);
+        }
+        else
+        {
+            // mov rdi, currentReg
+            instruction.zeroAll();
+            instruction.type = InstructionType::mov;
+            instruction.field.operand[0] = {OperandType::reg, Register::rdi};
+            instruction.field.operand[1] = {OperandType::reg, currentReg};
+            flow.instructions->pushBack(instruction);
+        }
+
         // mov rax, [rbp+var.shift]
         instruction.type = InstructionType::mov;
         instruction.field.operand[0] = {OperandType::reg, Register::rax};
@@ -748,22 +916,38 @@ bool Generator::genVarv(Vertex *vertex)
         instruction.field.operand[1].field.mem.shift = var.shift;
         flow.instructions->pushBack(instruction);
 
-        // push rax
-        instruction.zeroAll();
-        instruction.type = InstructionType::push;
-        instruction.field.operand[0] = {OperandType::reg, Register::rax};
+        // lea rax, [rax + 8*rdi]
+        instruction.type = InstructionType::lea;
         flow.instructions->pushBack(instruction);
-    }
 
-    else
-    {
-        // mov nextReg, [rbp+var.shift]
-        instruction.type = InstructionType::mov;
-        instruction.field.operand[0] = {OperandType::reg, nextReg};
-        instruction.field.operand[1].type = {OperandType::mem};
-        instruction.field.operand[1].field.mem.reg = Register::rbp;
-        instruction.field.operand[1].field.mem.shift = var.shift;
-        flow.instructions->pushBack(instruction);
+        // текущий регистр уже не нужен
+        if (currentReg == Register::stack)
+        {
+            // mov rax, [rax]
+            instruction.type = InstructionType::mov;
+            instruction.field.operand[0] = {OperandType::reg, Register::rax};
+            instruction.field.operand[1].type = {OperandType::mem};
+            instruction.field.operand[1].field.mem.reg = Register::rax;
+            instruction.field.operand[1].field.mem.shift = 0;
+            flow.instructions->pushBack(instruction);
+
+            // push rax
+            instruction.zeroAll();
+            instruction.type = InstructionType::push;
+            instruction.field.operand[0] = {OperandType::reg, Register::rax};
+            flow.instructions->pushBack(instruction);
+        }
+
+        else
+        {
+            // mov nextReg, [rax]
+            instruction.type = InstructionType::mov;
+            instruction.field.operand[0] = {OperandType::reg, currentReg};
+            instruction.field.operand[1].type = {OperandType::mem};
+            instruction.field.operand[1].field.mem.reg = Register::rax;
+            instruction.field.operand[1].field.mem.shift = 0;
+            flow.instructions->pushBack(instruction);
+        }
     }
 
     return var.isInt;
@@ -773,6 +957,7 @@ bool Generator::genExpr(Vertex *vertex)
 {
     if(vertex == nullptr)
         return false;
+
     switch (vertex->type)
     {
     case Type::Var:
@@ -908,6 +1093,7 @@ void Generator::genFuncDecl(Vertex *vertex)
     }
 
     generate(vertex->left);
+    shift = 0;
 
     if (!error)
         generate(vertex->right);
@@ -980,11 +1166,18 @@ void Generator::genStmtLink(Vertex *vertex)
 void Generator::genStatement(Vertex *vertex)
 {
     /*
-        *   Здесь все зависит от stType
-        */
+    *   Здесь все зависит от stType
+    */
 
+    debugMessage("nextReg = %d", stackImit.pointer);
     switch (vertex->field.stType)
-    {
+    {   
+    case StatementType::Break:
+        genBreak(vertex);
+        return;
+    case StatementType::Cont:
+        genCont(vertex);
+        return;
     case StatementType::Asgn:
         genAsgn(vertex);
         return;

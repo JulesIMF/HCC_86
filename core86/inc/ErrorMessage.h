@@ -20,8 +20,9 @@ Edit Notes:
 #define JULESIMF_ERRORMESSAGE
 
 int errorMessage(char const* format, ...);
-
 int warningMessage(char const* format, ...);
+int debugMessage(char const *format, ...);
+void setDebug(bool newMode = true);
 
 void printfMagenta(char const* format, ...);
 

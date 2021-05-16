@@ -31,6 +31,7 @@ public:
     {
         int shift;
         bool isInt = false;
+        bool isArray = false;
     };
 
 protected:
@@ -71,7 +72,7 @@ public:
         return { -1 };
     }
 
-    void insert(StringIter iter, int shift, bool isInt = false)
+    void insert(StringIter iter, int shift, bool isInt = false, bool isArray = false)
     {
         assert("assertion in insert" && index > -1);
         Var var { shift, isInt };

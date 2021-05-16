@@ -169,7 +169,8 @@ enum CompileError
     EXPECTED_PRIM,
     WRONG_NARG,
     UNDEFINED_VAR,
-    UNDEFINED_FNC
+    UNDEFINED_FNC,
+    
 };
 
 char const* errorToStr(CompileError error)

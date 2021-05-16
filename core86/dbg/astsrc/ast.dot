@@ -1,35 +1,39 @@
 digraph
 {
-dpi = 400;
-v0x556b1b941500[label = "7:5\nMain", shape = "parallelogram", fillcolor = "forestgreen", style = "filled, bold", fontsize = 15];
-v0x556b1b941500->v0x556b1b941e80 [color = "red"]
-v0x556b1b941e80[label = "0:0\nFuncLink", shape = "parallelogram", fillcolor = "orange", style = "filled, bold", fontsize = 15];
-v0x556b1b941500->v0x556b1b941cf0 [color = "blue"]
-v0x556b1b941cf0[label = "0:0\nStmtLink\nnewScope = true", shape = "parallelogram", fillcolor = "mediumspringgreen", style = "filled, bold", fontsize = 15];
-v0x556b1b941cf0->v0x556b1b941550 [color = "red"]
-v0x556b1b941550[label = "8:2\nStmtLink\nnewScope = true", shape = "parallelogram", fillcolor = "mediumspringgreen", style = "filled, bold", fontsize = 15];
-v0x556b1b941cf0->v0x556b1b941620 [color = "blue"]
-v0x556b1b941620[label = "9:9\nStatement\nstType = 'I'", shape = "diamond", style = "filled, bold", fillcolor = "darkorchid1", fontsize = 15];
-v0x556b1b941620->v0x556b1b941760 [color = "red"]
-v0x556b1b941760[label = "9:25\nCall\nid = \"printInt\", nArgs = 1", shape = "octagon", style = "filled, bold", fillcolor = "yellow", fontsize = 15];
-v0x556b1b941760->v0x556b1b9417b0 [color = "red"]
-v0x556b1b9417b0[label = "9:27\nArgList", shape = "parallelogram", fillcolor = "orange", style = "filled, bold", fontsize = 15];
-v0x556b1b9417b0->v0x556b1b941aa0 [color = "blue"]
-v0x556b1b941aa0[label = "9:49\nOperator\nopType = '+'", shape = "octagon", style = "filled, bold", fillcolor = "yellow", fontsize = 15];
-v0x556b1b941aa0->v0x556b1b941a00 [color = "red"]
-v0x556b1b941a00[label = "9:45\nOperator\nopType = '+'", shape = "octagon", style = "filled, bold", fillcolor = "yellow", fontsize = 15];
-v0x556b1b941a00->v0x556b1b941910 [color = "red"]
-v0x556b1b941910[label = "9:40\nCall\nid = \"scanInt\", nArgs = 0", shape = "octagon", style = "filled, bold", fillcolor = "yellow", fontsize = 15];
-v0x556b1b941910->v0x556b1b941960 [color = "red"]
-v0x556b1b941960[label = "9:42\nArgList", shape = "parallelogram", fillcolor = "orange", style = "filled, bold", fontsize = 15];
-v0x556b1b941a00->v0x556b1b941a50 [color = "blue"]
-v0x556b1b941a50[label = "9:47\nConst\nval = 1, int", shape = "record", style = "bold", fontsize = 15];
-v0x556b1b941aa0->v0x556b1b941af0 [color = "blue"]
-v0x556b1b941af0[label = "9:51\nConst\nval = 1, int", shape = "record", style = "bold", fontsize = 15];
-v0x556b1b941620->v0x556b1b941ca0 [color = "blue"]
-v0x556b1b941ca0[label = "9:54\nIf-Else", shape = "parallelogram", fillcolor = "orange", style = "filled, bold", fontsize = 15];
-v0x556b1b941ca0->v0x556b1b941d40 [color = "red"]
-v0x556b1b941d40[label = "10:17\nStatement\nstType = 'R'", shape = "diamond", style = "filled, bold", fillcolor = "darkorchid1", fontsize = 15];
-v0x556b1b941d40->v0x556b1b941d90 [color = "red"]
-v0x556b1b941d90[label = "10:19\nConst\nval = 0, int", shape = "record", style = "bold", fontsize = 15];
+dpi = 300;
+v0x55ef550dc780[label = "11:5\nMain", shape = "parallelogram", fillcolor = "forestgreen", style = "filled, bold", fontsize = 15];
+v0x55ef550dc780->v0x55ef550dd030 [color = "red"]
+v0x55ef550dd030[label = "0:0\nFuncLink", shape = "parallelogram", fillcolor = "orange", style = "filled, bold", fontsize = 15];
+v0x55ef550dd030->v0x55ef550dcfe0 [color = "red"]
+v0x55ef550dcfe0[label = "0:0\nFuncLink", shape = "parallelogram", fillcolor = "orange", style = "filled, bold", fontsize = 15];
+v0x55ef550dd030->v0x55ef550dc570 [color = "blue"]
+v0x55ef550dc570[label = "1:8\nFuncDecl\nid = \"Fib\", nArgs = 1", shape = "parallelogram", style = "filled, bold", fillcolor = "forestgreen", fontsize = 15];
+v0x55ef550dc570->v0x55ef550dc5f0 [color = "red"]
+v0x55ef550dc5f0[label = "1:13\nArgList", shape = "parallelogram", fillcolor = "orange", style = "filled, bold", fontsize = 15];
+v0x55ef550dc5f0->v0x55ef550dc640 [color = "blue"]
+v0x55ef550dc640[label = "1:15\nId\n\"a\"", shape = "record", style = "bold", fontsize = 15]; 
+v0x55ef550dc570->v0x55ef550dc6e0 [color = "blue"]
+v0x55ef550dc6e0[label = "2:2\nStmtLink\nnewScope = true", shape = "parallelogram", fillcolor = "mediumspringgreen", style = "filled, bold", fontsize = 15];
+v0x55ef550dc780->v0x55ef550dd0d0 [color = "blue"]
+v0x55ef550dd0d0[label = "0:0\nStmtLink\nnewScope = true", shape = "parallelogram", fillcolor = "mediumspringgreen", style = "filled, bold", fontsize = 15];
+v0x55ef550dd0d0->v0x55ef550dd080 [color = "red"]
+v0x55ef550dd080[label = "0:0\nStmtLink\nnewScope = false", shape = "parallelogram", fillcolor = "mediumspringgreen", style = "filled, bold", fontsize = 15];
+v0x55ef550dd080->v0x55ef550dc7d0 [color = "red"]
+v0x55ef550dc7d0[label = "12:2\nStmtLink\nnewScope = true", shape = "parallelogram", fillcolor = "mediumspringgreen", style = "filled, bold", fontsize = 15];
+v0x55ef550dd080->v0x55ef550dc950 [color = "blue"]
+v0x55ef550dc950[label = "14:11\nStatement\nstType = 'D'", shape = "diamond", style = "filled, bold", fillcolor = "darkorchid1", fontsize = 15];
+v0x55ef550dc950->v0x55ef550dc900 [color = "red"]
+v0x55ef550dc900[label = "14:8\nId\n\"n\"", shape = "record", style = "bold", fontsize = 15]; 
+v0x55ef550dc950->v0x55ef550dc9a0 [color = "blue"]
+v0x55ef550dc9a0[label = "14:15\nVarDecl\nid = \"int\", nElements = 3", shape = "parallelogram", style = "filled, bold", fillcolor = "forestgreen", fontsize = 15];
+v0x55ef550dd0d0->v0x55ef550dcdb0 [color = "blue"]
+v0x55ef550dcdb0[label = "15:16\nStatement\nstType = 'A'", shape = "diamond", style = "filled, bold", fillcolor = "darkorchid1", fontsize = 15];
+v0x55ef550dcdb0->v0x55ef550dcc40 [color = "red"]
+v0x55ef550dcc40[label = "15:8\nVar\n\"n\"", shape = "record", style = "bold", fontsize = 15]; 
+v0x55ef550dcc40->v0x55ef550dcd10 [color = "red"]
+v0x55ef550dcd10[label = "15:10\nVar\n\"i\"", shape = "record", style = "bold", fontsize = 15]; 
+v0x55ef550dcdb0->v0x55ef550dce00 [color = "blue"]
+v0x55ef550dce00[label = "15:18\nVar\n\"n\"", shape = "record", style = "bold", fontsize = 15]; 
+v0x55ef550dce00->v0x55ef550dcea0 [color = "red"]
+v0x55ef550dcea0[label = "15:20\nVar\n\"i\"", shape = "record", style = "bold", fontsize = 15]; 
 }

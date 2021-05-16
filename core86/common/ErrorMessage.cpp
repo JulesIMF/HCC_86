@@ -20,6 +20,8 @@ Edit Notes:
 #include <cstdarg>
 #include "../inc/ErrorMessage.h"
 
+static bool debugLevel = false;
+
 int errorMessage(char const* format, ...)
 {
     va_list list = {};
@@ -40,6 +42,26 @@ int warningMessage(char const* format, ...)
     va_end(list);
     fprintf(stderr, "\e[m");
     return returned;
+}
+
+int debugMessage(char const *format, ...)
+{
+    if(!debugLevel)
+        return 0;
+    va_list list = {};
+    va_start(list, format);
+    fprintf(stderr, "\e[1;94m"
+                    "debug: "
+                    "\e[1;39m");
+    int returned = vfprintf(stderr, format, list);
+    va_end(list);
+    fprintf(stderr, "\e[m\n");
+    return returned;
+}
+
+void setDebug(bool newMode)
+{
+    debugLevel = newMode;
 }
 
 void printfMagenta(char const* format, ...)

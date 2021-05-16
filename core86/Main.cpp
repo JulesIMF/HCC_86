@@ -1,17 +1,13 @@
 /**********************************************************************
 Copyright (c) 2020  MIPT
-
 Module Name:
     Main.cpp
-
 Abstract:    
     
 Author:
     JulesIMF
-
 Last Edit:
     17.12.2020 19:53
-
 Edit Notes:
     
 **********************************************************************/
@@ -53,7 +49,8 @@ struct CmdParameters
          toDumpAst = false,
          convolute = false,
          getSource = false,
-         debug     = false;
+         debug     = false,
+         intDebug  = false;
 
     static CmdParameters getCmdParameters(int nCmd, char const** cmd)
     {
@@ -90,6 +87,12 @@ struct CmdParameters
             if (!strcmp("-con", cmd[i]))
             {
                 parameters.convolute = true;
+                continue;
+            }
+
+            if (!strcmp("-con", cmd[i]))
+            {
+                setDebug();
                 continue;
             }
 
@@ -182,4 +185,3 @@ int main(int nCmd, char const** cmd)
     Translator translator;
     translator.translate(parameters.outputFile, flow.instructions, ast.holder);
 }
-

@@ -73,6 +73,8 @@ private:
     isdef(main);
     isdef(return);
     isdef(call);
+    isdef(break);
+    isdef(cont);
     isdef(fdelim);
     isdef(add);
     isdef(sub);
@@ -89,6 +91,8 @@ private:
     isdef(and);
     isdef(left);
     isdef(right);
+    isdef(lefts);
+    isdef(rights);
     isdef(comma);
     isdef(comment);
 #undef isdef
