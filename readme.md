@@ -11,7 +11,7 @@ HCC (originally called "Holy Cross Cross") is a tiny language that supports:
 
 # Grammar
 
-Current grammar and keywords are to be described in core86/common/Keywords.h
+Current grammar and keywords are to be described in *core86/common/Keywords.h*
 
     PGM         ::=     FNC+ MAIN '\0'  
     FNC         ::=     _def ID {_with ID {',' ID}*}? STMT_CAT  
@@ -120,5 +120,5 @@ The compiler supprots several flags:
 - **-ast** generates AST tree image
 - **-con** convolutes constants
 - **-lexer** prints lexer dump
-- **-s** prouces intel-syntax asm file (without std library source)
+- **-s** produces intel-syntax asm file (without std library source)
 - **-g** inserts trap interruption (int 3) before the entry
