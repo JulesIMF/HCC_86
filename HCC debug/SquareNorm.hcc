@@ -1,0 +1,68 @@
+def D with a, b, c
+{
+	$ return b * b - 4.0 * a * c
+}
+
+
+def Solve with a, b, c
+{
+	$ if | a = 0 /\ b = 0 /\ c = 0 |
+	{                                   
+		$ call Пророка | 9221120237041090560 |
+		$ return 0
+	}
+        
+	$ if | a = 0 /\ b = 0 |
+	{
+		$ call Пророка | 0.0 |
+		$ return 0
+	}
+        
+	$ if | a = 0 |
+	{
+		$ call Пророка | 1.0 |
+	        $ call Пророка | -b/c |
+		$ return 1.0
+	}
+
+        $ d is float
+        $ D is float
+        $ D takes call D | a, b, c |
+        $ d takes call КорняЗла | call D | a, b, c | |
+        
+        $ if | D > 0 |
+        {
+		$ call Пророка | 2.0 |
+		$ call Пророка | (-b + d)/(2.0 * a) |
+		$ call Пророка | (-b - d)/(2.0 * a) |
+		$ return 0
+        }
+
+
+        $ if | D = 0 |
+        {
+		$ call Пророка | 1.0 |
+		$ call Пророка | (-b)/(2.0 * a) | 
+		$ return 0
+        }
+
+        $ if | D < 0 |
+        {
+		$ call Пророка | 0.0 |
+		$ return 0
+        }
+
+}
+
+
+main
+{
+	$ a is float
+	$ b is float
+	$ c is float
+	$ a takes call Ангелов | |
+	$ b takes call Ангелов | |
+	$ c takes call Ангелов | |
+
+	$ call Solve | a, b, c |
+}

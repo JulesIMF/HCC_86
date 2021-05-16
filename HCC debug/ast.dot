@@ -1,0 +1,93 @@
+digraph
+{
+dpi = 400;
+v0000015179F4C900[label = "12:20\nMain", shape = "parallelogram", fillcolor = "forestgreen", style = "filled, bold", fontsize = 15];
+v0000015179F4C900->v0000015179F4B800 [color = "red"]
+v0000015179F4B800[label = "0:0\nFuncLink", shape = "parallelogram", fillcolor = "orange", style = "filled, bold", fontsize = 15];
+v0000015179F4B800->v0000015179F4B300 [color = "red"]
+v0000015179F4B300[label = "0:0\nFuncLink", shape = "parallelogram", fillcolor = "orange", style = "filled, bold", fontsize = 15];
+v0000015179F4B800->v0000015179F29200 [color = "blue"]
+v0000015179F29200[label = "1:24\nFuncDecl\nid = \"fib\", nArgs = 1", shape = "parallelogram", style = "filled, bold", fillcolor = "forestgreen", fontsize = 15];
+v0000015179F29200->v0000015179F29280 [color = "red"]
+v0000015179F29280[label = "1:40\nArgList", shape = "parallelogram", fillcolor = "orange", style = "filled, bold", fontsize = 15];
+v0000015179F29280->v0000015179F49610 [color = "blue"]
+v0000015179F49610[label = "1:42\nId\n\"n\"", shape = "record", style = "bold", fontsize = 15]; 
+v0000015179F29200->v0000015179F4B400 [color = "blue"]
+v0000015179F4B400[label = "0:0\nStmtLink\nnewScope = true", shape = "parallelogram", fillcolor = "mediumspringgreen", style = "filled, bold", fontsize = 15];
+v0000015179F4B400->v0000015179F4CC00 [color = "red"]
+v0000015179F4CC00[label = "0:0\nStmtLink\nnewScope = false", shape = "parallelogram", fillcolor = "mediumspringgreen", style = "filled, bold", fontsize = 15];
+v0000015179F4CC00->v0000015179F4B980 [color = "red"]
+v0000015179F4B980[label = "0:0\nStmtLink\nnewScope = false", shape = "parallelogram", fillcolor = "mediumspringgreen", style = "filled, bold", fontsize = 15];
+v0000015179F4B980->v0000015179F49710 [color = "red"]
+v0000015179F49710[label = "2:34\nStmtLink\nnewScope = true", shape = "parallelogram", fillcolor = "mediumspringgreen", style = "filled, bold", fontsize = 15];
+v0000015179F4B980->v0000015179F49810 [color = "blue"]
+v0000015179F49810[label = "3:28\nStatement\nstType = 'I'", shape = "diamond", style = "filled, bold", fillcolor = "darkorchid1", fontsize = 15];
+v0000015179F49810->v0000015179F499D0 [color = "red"]
+v0000015179F499D0[label = "3:34\nOperator\nopType = '='", shape = "octagon", style = "filled, bold", fillcolor = "yellow", fontsize = 15];
+v0000015179F499D0->v0000015179F49690 [color = "red"]
+v0000015179F49690[label = "3:32\nVar\n\"n\"", shape = "record", style = "bold", fontsize = 15]; 
+v0000015179F499D0->v0000015179F49A50 [color = "blue"]
+v0000015179F49A50[label = "3:38\nConst\nval = 0, float", shape = "record", style = "bold", fontsize = 15];
+v0000015179F49810->v0000015179F4A4A0 [color = "blue"]
+v0000015179F4A4A0[label = "3:40\nIf-Else", shape = "parallelogram", fillcolor = "orange", style = "filled, bold", fontsize = 15];
+v0000015179F4A4A0->v0000015179F4A520 [color = "red"]
+v0000015179F4A520[label = "4:49\nStatement\nstType = 'R'", shape = "diamond", style = "filled, bold", fillcolor = "darkorchid1", fontsize = 15];
+v0000015179F4A520->v0000015179F49B20 [color = "red"]
+v0000015179F49B20[label = "4:51\nConst\nval = 0, int", shape = "record", style = "bold", fontsize = 15];
+v0000015179F4CC00->v0000015179F4A320 [color = "blue"]
+v0000015179F4A320[label = "6:28\nStatement\nstType = 'I'", shape = "diamond", style = "filled, bold", fillcolor = "darkorchid1", fontsize = 15];
+v0000015179F4A320->v0000015179F49EA0 [color = "red"]
+v0000015179F49EA0[label = "6:34\nOperator\nopType = '='", shape = "octagon", style = "filled, bold", fillcolor = "yellow", fontsize = 15];
+v0000015179F49EA0->v0000015179F4A220 [color = "red"]
+v0000015179F4A220[label = "6:32\nVar\n\"n\"", shape = "record", style = "bold", fontsize = 15]; 
+v0000015179F49EA0->v0000015179F4A620 [color = "blue"]
+v0000015179F4A620[label = "6:38\nConst\nval = 4607182418800017408, float", shape = "record", style = "bold", fontsize = 15];
+v0000015179F4A320->v0000015179F49D20 [color = "blue"]
+v0000015179F49D20[label = "6:40\nIf-Else", shape = "parallelogram", fillcolor = "orange", style = "filled, bold", fontsize = 15];
+v0000015179F49D20->v0000015179F4A6A0 [color = "red"]
+v0000015179F4A6A0[label = "7:49\nStatement\nstType = 'R'", shape = "diamond", style = "filled, bold", fillcolor = "darkorchid1", fontsize = 15];
+v0000015179F4A6A0->v0000015179F4A720 [color = "red"]
+v0000015179F4A720[label = "7:53\nConst\nval = 4607182418800017408, float", shape = "record", style = "bold", fontsize = 15];
+v0000015179F4B400->v0000015179F4A820 [color = "blue"]
+v0000015179F4A820[label = "9:55\nStatement\nstType = 'R'", shape = "diamond", style = "filled, bold", fillcolor = "darkorchid1", fontsize = 15];
+v0000015179F4A820->v0000015179F49F20 [color = "red"]
+v0000015179F49F20[label = "9:79\nOperator\nopType = '+'", shape = "octagon", style = "filled, bold", fillcolor = "yellow", fontsize = 15];
+v0000015179F49F20->v0000015179F49FA0 [color = "red"]
+v0000015179F49FA0[label = "9:67\nCall\nid = \"fib\", nArgs = 1", shape = "octagon", style = "filled, bold", fillcolor = "yellow", fontsize = 15];
+v0000015179F49FA0->v0000015179F49C20 [color = "red"]
+v0000015179F49C20[label = "9:69\nArgList", shape = "parallelogram", fillcolor = "orange", style = "filled, bold", fontsize = 15];
+v0000015179F49C20->v0000015179F49CA0 [color = "blue"]
+v0000015179F49CA0[label = "9:72\nOperator\nopType = '-'", shape = "octagon", style = "filled, bold", fillcolor = "yellow", fontsize = 15];
+v0000015179F49CA0->v0000015179F4A0A0 [color = "red"]
+v0000015179F4A0A0[label = "9:70\nVar\n\"n\"", shape = "record", style = "bold", fontsize = 15]; 
+v0000015179F49CA0->v0000015179F49E20 [color = "blue"]
+v0000015179F49E20[label = "9:76\nConst\nval = 4607182418800017408, float", shape = "record", style = "bold", fontsize = 15];
+v0000015179F49F20->v0000015179F4A9A0 [color = "blue"]
+v0000015179F4A9A0[label = "9:91\nCall\nid = \"fib\", nArgs = 1", shape = "octagon", style = "filled, bold", fillcolor = "yellow", fontsize = 15];
+v0000015179F4A9A0->v0000015179F4A020 [color = "red"]
+v0000015179F4A020[label = "9:93\nArgList", shape = "parallelogram", fillcolor = "orange", style = "filled, bold", fontsize = 15];
+v0000015179F4A020->v0000015179F4A1A0 [color = "blue"]
+v0000015179F4A1A0[label = "9:96\nOperator\nopType = '-'", shape = "octagon", style = "filled, bold", fillcolor = "yellow", fontsize = 15];
+v0000015179F4A1A0->v0000015179F4A120 [color = "red"]
+v0000015179F4A120[label = "9:94\nVar\n\"n\"", shape = "record", style = "bold", fontsize = 15]; 
+v0000015179F4A1A0->v0000015179F4A2A0 [color = "blue"]
+v0000015179F4A2A0[label = "9:100\nConst\nval = 4611686018427387904, float", shape = "record", style = "bold", fontsize = 15];
+v0000015179F4C900->v0000015179F4C880 [color = "blue"]
+v0000015179F4C880[label = "0:0\nStmtLink\nnewScope = true", shape = "parallelogram", fillcolor = "mediumspringgreen", style = "filled, bold", fontsize = 15];
+v0000015179F4C880->v0000015179F4C980 [color = "red"]
+v0000015179F4C980[label = "14:34\nStmtLink\nnewScope = true", shape = "parallelogram", fillcolor = "mediumspringgreen", style = "filled, bold", fontsize = 15];
+v0000015179F4C880->v0000015179F4BF80 [color = "blue"]
+v0000015179F4BF80[label = "15:38\nStatement\nstType = 'C'", shape = "diamond", style = "filled, bold", fillcolor = "darkorchid1", fontsize = 15];
+v0000015179F4BF80->v0000015179F4AD80 [color = "red"]
+v0000015179F4AD80[label = "16:4\nArgList", shape = "parallelogram", fillcolor = "orange", style = "filled, bold", fontsize = 15];
+v0000015179F4AD80->v0000015179F4B600 [color = "blue"]
+v0000015179F4B600[label = "17:15\nCall\nid = \"fib\", nArgs = 1", shape = "octagon", style = "filled, bold", fillcolor = "yellow", fontsize = 15];
+v0000015179F4B600->v0000015179F4BE80 [color = "red"]
+v0000015179F4BE80[label = "18:6\nArgList", shape = "parallelogram", fillcolor = "orange", style = "filled, bold", fontsize = 15];
+v0000015179F4BE80->v0000015179F4CA00 [color = "blue"]
+v0000015179F4CA00[label = "19:21\nCall\nid = \"Ангелов\", nArgs = 0", shape = "octagon", style = "filled, bold", fillcolor = "yellow", fontsize = 15];
+v0000015179F4CA00->v0000015179F4B500 [color = "red"]
+v0000015179F4B500[label = "19:23\nArgList", shape = "parallelogram", fillcolor = "orange", style = "filled, bold", fontsize = 15];
+v0000015179F4BF80->v0000015179F4C500 [color = "blue"]
+v0000015179F4C500[label = "0:0\nId\n\"Пророка\"", shape = "record", style = "bold", fontsize = 15]; 
+}

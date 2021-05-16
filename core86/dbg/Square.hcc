@@ -1,0 +1,133 @@
+ ; Программа для решения квадратного уравнения
+ ; (0,0,0) - 9221120237041090560; (0,0,c) - 0, (0,b,c) - 1, D > 0 - 2, D = 0 - 1, D < 0 - 0
+
+
+ ;------------------------------------------------------------------------------------------
+
+ def Discr with a, b, c
+ {
+	!  return b * b - 4 * a * c
+ }
+
+ ;------------------------------------------------------------------------------------------
+
+
+ def nRoots with a, b, c
+ {
+
+ ; линейные уравнения
+
+	! if | a = 0.0 /\ b = 0.0 /\ c = 0.0 |
+			!  return 9221120237041090560
+
+	! if  | a = 0.0 /\ b = 0.0 |
+			!  return 0.0
+
+	! if  | a = 0.0 |
+	{
+			! call printFloat  | -c / b |
+			!  return 1.0
+	}
+
+ ; квадратные уравнения
+
+	! D is float
+	! D gets call Discr  | a, b, c |
+
+    ! if  | D > 0 |
+		!  return 2.0		
+
+	! if  | D = 0 |
+    	!  return 1.0
+
+    ! if  | D < 0 |
+        !  return 0.0
+
+ }
+
+ ;------------------------------------------------------------------------------------------
+
+ def Solutions  with a, b, c
+ {
+
+ ; линейные уравнения
+
+	! if  | a = 0.0 /\ b = 0.0 /\ c = 0.0 |
+			!  return 9221120237041090560
+
+	! if  | a = 0.0 /\ b = 0.0  |
+			!  return 0.0
+
+	! if  | a = 0.0  |
+
+	 {
+			! call printFloat  | -c / b |
+			!  return 1.0
+	 }
+
+	! D        is float
+	! d is float 
+
+         ; ! D gets call Discr  | a, b, c |
+
+        ! if  | D >= 0  |
+	        ! d gets call sqrt  | D |
+
+
+        ! if  | D > 0  |
+         {
+                        ! call printFloat  | (-b - d)/(2.0 * a) |
+                        ! call printFloat  | (-b + d)/(2.0 * a) |          
+         }
+
+        ! if  | D = 0  |
+
+         {
+                        ! call printFloat  | (-b)/(2.0 * a) |
+         }
+
+
+	!  return 0.0
+
+ }
+
+
+
+ ;------------------------------------------------------------------------------------------
+main
+
+ {
+	! a is float								
+	! b is float
+	! c is float
+
+	! a gets call input  |  |
+	! b gets call input  |  |
+	! c gets call input  |  |
+
+	! call printFloat  | 
+					call nRoots  | a, b, c  | 
+					      |
+
+
+	! if  | a =/= 0.0  |
+				! call Solutions  | a, b, c  |
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

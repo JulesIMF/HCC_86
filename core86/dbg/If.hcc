@@ -1,0 +1,5 @@
+main
+{
+	! r is int
+	! r gets 7 \/ 8
+}

@@ -1,0 +1,35 @@
+digraph
+{
+dpi = 400;
+v0x556b1b941500[label = "7:5\nMain", shape = "parallelogram", fillcolor = "forestgreen", style = "filled, bold", fontsize = 15];
+v0x556b1b941500->v0x556b1b941e80 [color = "red"]
+v0x556b1b941e80[label = "0:0\nFuncLink", shape = "parallelogram", fillcolor = "orange", style = "filled, bold", fontsize = 15];
+v0x556b1b941500->v0x556b1b941cf0 [color = "blue"]
+v0x556b1b941cf0[label = "0:0\nStmtLink\nnewScope = true", shape = "parallelogram", fillcolor = "mediumspringgreen", style = "filled, bold", fontsize = 15];
+v0x556b1b941cf0->v0x556b1b941550 [color = "red"]
+v0x556b1b941550[label = "8:2\nStmtLink\nnewScope = true", shape = "parallelogram", fillcolor = "mediumspringgreen", style = "filled, bold", fontsize = 15];
+v0x556b1b941cf0->v0x556b1b941620 [color = "blue"]
+v0x556b1b941620[label = "9:9\nStatement\nstType = 'I'", shape = "diamond", style = "filled, bold", fillcolor = "darkorchid1", fontsize = 15];
+v0x556b1b941620->v0x556b1b941760 [color = "red"]
+v0x556b1b941760[label = "9:25\nCall\nid = \"printInt\", nArgs = 1", shape = "octagon", style = "filled, bold", fillcolor = "yellow", fontsize = 15];
+v0x556b1b941760->v0x556b1b9417b0 [color = "red"]
+v0x556b1b9417b0[label = "9:27\nArgList", shape = "parallelogram", fillcolor = "orange", style = "filled, bold", fontsize = 15];
+v0x556b1b9417b0->v0x556b1b941aa0 [color = "blue"]
+v0x556b1b941aa0[label = "9:49\nOperator\nopType = '+'", shape = "octagon", style = "filled, bold", fillcolor = "yellow", fontsize = 15];
+v0x556b1b941aa0->v0x556b1b941a00 [color = "red"]
+v0x556b1b941a00[label = "9:45\nOperator\nopType = '+'", shape = "octagon", style = "filled, bold", fillcolor = "yellow", fontsize = 15];
+v0x556b1b941a00->v0x556b1b941910 [color = "red"]
+v0x556b1b941910[label = "9:40\nCall\nid = \"scanInt\", nArgs = 0", shape = "octagon", style = "filled, bold", fillcolor = "yellow", fontsize = 15];
+v0x556b1b941910->v0x556b1b941960 [color = "red"]
+v0x556b1b941960[label = "9:42\nArgList", shape = "parallelogram", fillcolor = "orange", style = "filled, bold", fontsize = 15];
+v0x556b1b941a00->v0x556b1b941a50 [color = "blue"]
+v0x556b1b941a50[label = "9:47\nConst\nval = 1, int", shape = "record", style = "bold", fontsize = 15];
+v0x556b1b941aa0->v0x556b1b941af0 [color = "blue"]
+v0x556b1b941af0[label = "9:51\nConst\nval = 1, int", shape = "record", style = "bold", fontsize = 15];
+v0x556b1b941620->v0x556b1b941ca0 [color = "blue"]
+v0x556b1b941ca0[label = "9:54\nIf-Else", shape = "parallelogram", fillcolor = "orange", style = "filled, bold", fontsize = 15];
+v0x556b1b941ca0->v0x556b1b941d40 [color = "red"]
+v0x556b1b941d40[label = "10:17\nStatement\nstType = 'R'", shape = "diamond", style = "filled, bold", fillcolor = "darkorchid1", fontsize = 15];
+v0x556b1b941d40->v0x556b1b941d90 [color = "red"]
+v0x556b1b941d90[label = "10:19\nConst\nval = 0, int", shape = "record", style = "bold", fontsize = 15];
+}

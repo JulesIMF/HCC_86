@@ -1,0 +1,14 @@
+def Foo with a, b, c
+{
+	! x is int
+	! x gets call input | |
+	! if | x + 3 |
+			! return x
+	else
+			! return 0
+}
+
+main
+{
+	
+}
