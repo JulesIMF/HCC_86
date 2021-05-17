@@ -128,9 +128,10 @@ And sorting:
 # Compiler flags
 
 The compiler supprots several flags:
-- **-o \<filename\>** specifies output biniary filename
+- **-o \<filename\>** specifies output biniary file name
 - **-ast** generates AST tree image
 - **-con** convolutes constants
 - **-lexer** prints lexer dump
 - **-s** produces intel-syntax asm file (without std library source)
 - **-g** inserts trap interruption (int 3) before the entry
+- **-help** outputs this message

@@ -52,6 +52,20 @@ struct CmdParameters
          debug     = false,
          intDebug  = false;
 
+    static void printHelp()
+    {
+        printf(
+            "./hcc [flags] <source> [flags]\n"
+            "-o <filename>\tspecifies output biniary file name\n"
+            "-ast\t\tgenerates AST tree image\n"
+            "-con\t\tconvolutes constants\n"
+            "-lexer\t\tprints lexer dump\n"
+            "-s\t\tproduces intel-syntax asm file (without std library source)\n"
+            "-g\t\tinserts trap interruption (int 3) before the entry\n"
+            "-help\t\toutputs this message\n"
+        );
+    }
+
     static CmdParameters getCmdParameters(int nCmd, char const** cmd)
     {
         CmdParameters parameters;
@@ -60,9 +74,19 @@ struct CmdParameters
             if (!strcmp("-o", cmd[i]))
             {
                 i++;
-                if (i == nCmd) break;
+                if (i == nCmd) 
+                {
+                    warningMessage("ожидается имя файла после \"-o\"");
+                    break;
+                }
 
                 parameters.outputFile = cmd[i];
+                continue;
+            }
+
+            if (!strcmp("-debug", cmd[i]))
+            {
+                setDebug();
                 continue;
             }
 
@@ -70,6 +94,12 @@ struct CmdParameters
             {
                 parameters.toDumpAst = true;
                 continue;
+            }
+
+            if (!strcmp("-help", cmd[i]))
+            {
+                printHelp();
+                exit(0);
             }
 
             if (!strcmp("-g", cmd[i]))
