@@ -67,6 +67,14 @@ StringsHolder* StringsHolder::newStringsHolder(void)
     return holder;
 }
 
+void StringsHolder::deleteStringsHolder(StringsHolder* holder)
+{
+    if(holder)
+        free(holder->buffer_);
+        
+    free(holder);
+}
+
 
 StringsHolder::StringIter StringsHolder::insert(char const* source, size_t length)
 {

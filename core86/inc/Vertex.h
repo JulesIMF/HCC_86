@@ -41,6 +41,8 @@ namespace Node
         Delimiter,
         With,
         PgmEnd,
+        In,
+        Out,
         IfElse,
     };
 
@@ -60,6 +62,8 @@ namespace Node
         Geq     = ')',
         Or      = '|',
         And     = '&',
+        In      = 'I',
+        Out     = 'O',
     };
 
     enum class StatementType

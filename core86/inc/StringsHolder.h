@@ -46,6 +46,7 @@ public:
 
     void                    makeStringsHolder(void);
     static StringsHolder*   newStringsHolder(void);
+    static void             deleteStringsHolder(StringsHolder* holder);
 
     StringIter              insert(char const* source, size_t length = 0);
 };

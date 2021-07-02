@@ -9,9 +9,13 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/core86/hcc",
-            "args": ["core86/dbg/accerman.hcc"],
+            "args": [
+                "dbg/sort.hcc",
+                "-o",
+                "sort1"
+            ],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/core86",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",

@@ -1,6 +1,6 @@
 # HCC
 
-HCC (originally called "Holy Cross Cross") is a tiny language that supports:
+HCC (originally called "Holy Cross Cross") is a tiny language and self-named compiler developing infrastructure that supports:
 - Qword signed integers (int)
 - Recursive functions
 - if-else
@@ -8,6 +8,8 @@ HCC (originally called "Holy Cross Cross") is a tiny language that supports:
 - static arrays on stack
 - different expressions: arythmetical (+, -, *, /), comparison operators (=, =/=, <, >, <=, >=), logical operators (/\\, \\/, ~), calling functions
 - standard functions: scanInt, printInt, newLine
+
+Here we implement an x86 compiler (System V) for this language. Let us take a look at the language.
 
 # Grammar
 
@@ -29,7 +31,7 @@ Current grammar and keywords are to be described in *core86/common/Keywords.h*
     EXPR        ::=     COMP {'/\' '\/' COMP}*  
     COMP        ::=     FORM ['=/=' '=' '>=' '>' '<=' '<'] FORM  
     FORM        ::=     TERM {['+' '-'] TERM}*  
-    TERM        ::=     PRIM {['*' '/'] PRIM}*  
+    TERM        ::=     PRIM {['*' '/'] PRIM}* 
     PRIM        ::=     ['~' '-']? PRIM | CALL | '(' EXPR ')' | NUMB | VARV
     CALL        ::=     _call ID _delim {EXPR {',' EXPR}*}? _delim
     VARV        ::=     ID | ID '[' EXPR ']'
@@ -125,6 +127,27 @@ And sorting:
         ! call printArr | n, 10 |
     }
 
+# Compiler architecture
+The main program is "HCC". It operates front-end, middle-end and back-end modules:
+- **Front-end** module gets source file and produces parsed tree;
+- **Middle-end** module gets this tree and optimizes this (currently only converses constants);
+- **Back-end** module gets optimized tree and produces binary executive file.
+
+This allows to create only n + m modules for n languages and m architectures (instead n + m). 
+Currently, the author has implemented only HCC language front-end and x86 System V back-end.
+
+# Front-end details
+Front-end has two main steps: lexicographic analysis (lexing) and parsing:
+- Lexer divides source into tokens (such as keywords, operators, separators, identifiers, ...) to simplify further parsing
+- Parser creates AST (abstract syntax tree) from parsed tokens
+
+# Back-end details
+Back-end proceeding also has two steps: code generating and translating:
+- Generator produces instruction flow from AST, but does not translate it into binary code, so one can (((potentially))) analyze the flow and optimize it (or print assembly code)
+- Translator generates the end (executed) file from this flow
+
+
+
 # Compiler flags
 
 The compiler supprots several flags:
@@ -135,3 +158,5 @@ The compiler supprots several flags:
 - **-s** produces intel-syntax asm file (without std library source)
 - **-g** inserts trap interruption (int 3) before the entry
 - **-help** outputs this message
+
+

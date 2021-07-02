@@ -2,6 +2,9 @@ CPPC		= g++
 CPPFLAGS	=-c -O2 -g -B~/source/HCC86/kernel86
 MASTER		=-O2 -g -B~/source/HCC86/kernel86 
 
+hcc: Main.cpp
+	$(CPPC) $(MASTER) -O2 obj/ErrorMessage.o Main.cpp -o hcc
+
 all:	obj/Main.o obj/ErrorMessage.o obj/Files.o obj/Keywords.o obj/Stack.o obj/StringsHolder.o obj/Vertex.o obj/CompilationStructs.o obj/Generate86.o obj/VarTable.o obj/Lexer.o obj/AstDump.o obj/Parse.o obj/WriteAsm86.o obj/Translate86.o
 
 	$(CPPC) $(MASTER) -O2 obj/Main.o obj/ErrorMessage.o obj/Files.o obj/Keywords.o \

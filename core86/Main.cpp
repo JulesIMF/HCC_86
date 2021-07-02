@@ -9,36 +9,21 @@ Author:
 Last Edit:
     17.12.2020 19:53
 Edit Notes:
-    
+    Frontend:
+        HCC
+
+    Backend:
+        x86 (JulesIMF, SystemV)
+
 **********************************************************************/
 
 #define _CRT_SECURE_NO_WARNINGS
 #include <cstdio>
 #include <cassert>
 #include <clocale>
-#include "inc/StringsHolder.h"
-#include "inc/List.h"
-#include "inc/Files.h"
-#include "inc/Parse.h"
-#include "inc/AstDump.h"
-#include "inc/Generate86.h"
-#include "inc/WriteAsm86.h"
-#include "inc/Translate86.h"
-
-char const* getSourceFromMemory(char const* fileName)
-{
-    char* tran = nullptr;
-    int fileSize = 0, nStrings = 0;
-    tran = (char*)translateFileIntoRam(
-        fileName,
-        &fileSize,
-        &nStrings);
-    if (tran == nullptr)
-        errorMessage("не найден файл \"%s\"\n", fileName);
-
-    return tran;
-}
-
+#include <cstdlib>
+#include <cstring>
+#include "inc/ErrorMessage.h"
 
 struct CmdParameters
 {
@@ -173,45 +158,25 @@ int main(int nCmd, char const** cmd)
     if (parameters.inputFile == nullptr)
     {
         errorMessage("не указан исходный файл\n");
-        
-        return -1;
+        return 1;
     }
-
-    auto source = getSourceFromMemory(parameters.inputFile);
-
-    if(source == nullptr)
-        return -1;
     
-    Parse parser;
-    auto ast = parser.getParsed(source, parameters.toDumpLex);
-    parser.deleteParser();
+    char buffer[1024] = {};
 
-    if(parameters.convolute)
-        constConvolution(ast.AST);
-
-    if (!ast.error)
-    {
-        if(parameters.toDumpAst)
-        {
-            astDump(ast.AST);
-            return 0;
-        }
-    }
-    else
-        return (int)ast.error;
-
-    Generator generator;
-    auto flow = generator.compile(ast.AST, ast.holder, parameters.debug);
-
-    if(parameters.getSource)
-    {
-        auto asmGenError = AssemblerGenerator::writeToAsmFile(parameters.outputAsmFile, flow);
-            if(asmGenError != AssemblerGenerator::WriteAsmError::NO_ERROR)
-                ;
-        
+    snprintf(buffer, sizeof(buffer) - 1, "./bin/hccfronthcc %s %s", parameters.inputFile, "tree");
+    if (system(buffer))
         return 0;
-    }
 
-    Translator translator;
-    translator.translate(parameters.outputFile, flow.instructions, ast.holder);
+    snprintf(buffer, sizeof(buffer) - 1, "./bin/hccmiddle %s %s %s", "tree", "tree", parameters.toDumpAst ? "-ast" : "");
+    if (system(buffer))
+        return 0;
+    if(!parameters.getSource)
+        snprintf(buffer, sizeof(buffer) - 1, "./bin/hccback86 %s %s", "tree", parameters.outputFile);
+    else
+        snprintf(buffer, sizeof(buffer) - 1, "./bin/hccback86 %s %s -s", "tree", parameters.outputAsmFile);
+        
+    if (system(buffer))
+        return 0;
+
+    system("rm tree");
 }

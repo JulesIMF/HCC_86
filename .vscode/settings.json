@@ -1,10 +1,12 @@
 {
     "files.associations": {
-        "deque": "cpp",
-        "string": "cpp",
-        "vector": "cpp",
-        "limits": "cpp",
-        "*.tcc": "cpp",
-        "type_traits": "cpp"
+        "array": "cpp",
+        "functional": "cpp",
+        "istream": "cpp",
+        "ostream": "cpp",
+        "tuple": "cpp",
+        "type_traits": "cpp",
+        "utility": "cpp",
+        "cstdio": "cpp"
     }
 }

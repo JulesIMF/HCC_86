@@ -19,6 +19,7 @@ Edit Notes:
 #ifndef CPP_COMPILATION_STRUCTS
 #define CPP_COMPILATION_STRUCTS
 #include <algorithm>
+#include "../common/Keywords.h"
 #include "Vector.h"
 
 enum class InstructionType
@@ -155,6 +156,7 @@ struct Instruction
 struct Compiled
 {
     Vector<Instruction>* instructions;
+    CompileError error;
 };
 
 
