@@ -1,0 +1,17 @@
+def Fib with x
+{
+    ! if | x = 0 |
+        ! return 0
+
+    ! if | x = 1 |
+        ! return 1
+    
+    ! return call Fib | x - 1 | + call Fib | x - 2 |
+}
+
+main
+{
+    ! n is int
+    ! n gets call scanInt | |
+    ! call printInt | call Fib | n | |
+}

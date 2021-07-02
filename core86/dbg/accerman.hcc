@@ -1,0 +1,14 @@
+def Accerman with x, y
+{
+
+}
+
+main
+{   
+    ! n is int
+    ! m is int
+    ! n gets call scanInt ||
+    ! m gets call scanInt ||
+    ! call printInt | call Accerman | n, n | |
+    ! call 
+}

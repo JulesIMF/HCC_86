@@ -1,0 +1,24 @@
+main
+{
+    ! n is int
+    ! i is int
+    ! n gets call scanInt ||
+    ! i gets 0
+    ! cur is int
+    ! old is int
+    ! old2 is int
+
+    ! old gets 1
+    ! old2 gets 0
+
+    ! while | i < n - 1 |
+    {
+        ! cur gets old + old2
+        ! old2 gets old
+        ! old gets cur
+        ! i gets i + 1
+    }
+
+    ! call printInt | cur |
+    ! call scanInt ||
+}

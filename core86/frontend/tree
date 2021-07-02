@@ -1,0 +1,52 @@
+51
+Main 2 29
+FuncLink 3 7
+FuncLink 4 5
+FuncLink 0 0
+FuncDecl EmptyFunction 0 0 6
+StmtLink 1 0 0
+FuncDecl Fact 2 8 12
+ArgList 9 11
+ArgList 0 10
+Id x 0 0
+Id y 0 0
+StmtLink 1 13 14
+StmtLink 123 0 0
+Statement I 15 18
+Operator = 16 17
+Var x 0 0
+Const 0 1 0 0
+IsElse 19 21
+Statement R 20 0
+Const 1 1 0 0
+Statement R 22 0
+Operator * 23 24
+Var x 0 0
+Call Fact 1 25 0
+ArgList 0 26
+Operator - 27 28
+Var x 0 0
+Const 1 1 0 0
+StmtLink 1 30 35
+StmtLink 0 31 32
+StmtLink 123 0 0
+Statement D 33 34
+Id n 0 0
+VarType int 0 0 0
+Statement L 36 37
+Var n 0 0
+StmtLink 1 38 44
+StmtLink 0 39 40
+StmtLink 123 0 0
+Statement A 41 42
+Var n 0 0
+Call scanInt 0 43 0
+ArgList 0 0
+Statement C 45 51
+ArgList 0 46
+Call Fact 2 47 0
+ArgList 48 50
+ArgList 0 49
+Var n 0 0
+Var m 0 0
+Id printInt 0 0

@@ -1,0 +1,7 @@
+main
+{
+    ! i is int
+    ! t is int
+    ! i gets call scanInt | | ! t gets call scanInt | |
+    ! call printInt | i / t |
+}
